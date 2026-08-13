@@ -3,12 +3,12 @@
 
 <head>
 
-<title>Moments Wedding</title>
+<title>PeopleWedding</title>
 
 <style>
 
 body {
-    font-family: Arial;
+    font-family: Arial, sans-serif;
     max-width: 600px;
     margin: 50px auto;
     padding: 20px;
@@ -24,6 +24,7 @@ input {
 button {
     width: 100%;
     padding: 14px;
+    margin-top: 8px;
     background: black;
     color: white;
     border: none;
@@ -37,6 +38,28 @@ button {
     display: none;
 }
 
+#guestPage {
+    margin-top: 30px;
+    padding: 20px;
+    background: #f2f2f2;
+    display: none;
+}
+
+#gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+#gallery img {
+    width: 180px;
+    border-radius: 10px;
+}
+
+#qrCode {
+    margin-top: 20px;
+}
+
 </style>
 
 </head>
@@ -48,7 +71,6 @@ button {
 
 <h2>Create Wedding Event</h2>
 
-
 <label>
 Couple Name
 </label>
@@ -57,7 +79,6 @@ Couple Name
 id="name"
 placeholder="Ery & Sara"
 >
-
 
 <label>
 Wedding Date
@@ -68,7 +89,6 @@ id="date"
 type="date"
 >
 
-
 <label>
 Location
 </label>
@@ -78,26 +98,13 @@ id="location"
 placeholder="Kuala Lumpur"
 >
 
-
 <button id="create">
-
 Create Wedding Event
-
 </button>
 
 <button id="guestButton">
-    GUEST
+GUEST
 </button>
-
-<script>
-
-document.getElementById("guestButton").onclick = function() {
-
-    document.getElementById("guestPage").style.display = "block";
-
-};
-
-</script>
 
 
 <div id="event">
@@ -111,161 +118,263 @@ document.getElementById("guestButton").onclick = function() {
 </div>
 
 
+<div id="guestPage">
+
+<h2>📸 Guest Gallery</h2>
+
+<h1 id="guestName"></h1>
+
+<p id="eventId"></p>
+
+<div id="qrCode"></div>
+
+<p id="guestInfo">
+Share your wedding photos with the couple.
+</p>
+
+<input
+type="file"
+id="guestPhotos"
+accept="image/*"
+multiple
+>
+
+<div id="gallery"></div>
+
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+
 <script>
+
+const nameInput =
+document.getElementById("name");
+
+const dateInput =
+document.getElementById("date");
+
+const locationInput =
+document.getElementById("location");
+
+const event =
+document.getElementById("event");
+
+const guestPage =
+document.getElementById("guestPage");
+
+const guestButton =
+document.getElementById("guestButton");
+
+const guestName =
+document.getElementById("guestName");
+
+const eventId =
+document.getElementById("eventId");
+
+const qrCode =
+document.getElementById("qrCode");
+
+const gallery =
+document.getElementById("gallery");
+
+
+// CREATE WEDDING EVENT
 
 document
 .getElementById("create")
 .addEventListener("click", function() {
 
+    let name =
+    nameInput.value.trim();
 
-let name =
-document.getElementById("name").value;
+    let date =
+    dateInput.value;
 
-
-let date =
-document.getElementById("date").value;
-
-
-let location =
-document.getElementById("location").value;
+    let location =
+    locationInput.value.trim();
 
 
-if (name === "") {
+    if (name === "") {
 
-alert("Masukkan nama pengantin");
+        alert("Masukkan nama pengantin");
 
-return;
+        return;
 
-}
-
-
-if (date === "") {
-
-alert("Pilih tarikh wedding");
-
-return;
-
-}
-
-
-if (location === "") {
-
-alert("Masukkan lokasi");
-
-return;
-
-}
-
-
-document
-.getElementById("eventName")
-.innerText =
-"💍 " + name;
-
-
-document
-.getElementById("eventDate")
-.innerText =
-"📅 " + date;
-
-
-document
-.getElementById("eventLocation")
-.innerText =
-"📍 " + location;
-
-
-document
-.getElementById("event")
-.style.display =
-"block";
-
-document
-.getElementById("guestName")
-.innerText =
-name;
-
-document
-.getElementById("eventId")
-.innerText =
-"Event ID: " +
-
-name
-.toUpperCase()
-.replace(/\s*&\s*/g, "-")
-.replace(/\s+/g, "-")
-+ "-2026";
-
-let eventCode =
-name
-.toUpperCase()
-.replace(/\s*&\s*/g, "-")
-.replace(/\s+/g, "-")
-+ "-2026";
-
-document.getElementById("qrCode").innerHTML = "";
-
-new QRCode(
-    document.getElementById("qrCode"),
-    {
-        text: "https://moments.example/" + eventCode,
-        width: 200,
-        height: 200
     }
-);
 
 
-alert("Wedding Event Created!");
+    if (date === "") {
 
+        alert("Pilih tarikh wedding");
+
+        return;
+
+    }
+
+
+    if (location === "") {
+
+        alert("Masukkan lokasi");
+
+        return;
+
+    }
+
+
+    event
+    .style.display = "block";
+
+
+    document
+    .getElementById("eventName")
+    .innerText =
+    "💍 " + name;
+
+
+    document
+    .getElementById("eventDate")
+    .innerText =
+    "📅 " + date;
+
+
+    document
+    .getElementById("eventLocation")
+    .innerText =
+    "📍 " + location;
+
+
+    guestPage
+    .style.display = "block";
+
+
+    guestName
+    .innerText =
+    name;
+
+
+    let year =
+    new Date(date).getFullYear();
+
+
+    let eventCode =
+    name
+    .toUpperCase()
+    .replace(/\s*&\s*/g, "-")
+    .replace(/\s+/g, "-")
+    + "-" + year;
+
+
+    eventId
+    .innerText =
+    "Event ID: " + eventCode;
+
+
+    qrCode.innerHTML = "";
+
+
+    let guestURL =
+    window.location.origin +
+    window.location.pathname +
+    "?event=" +
+    encodeURIComponent(eventCode);
+
+
+    new QRCode(
+        qrCode,
+        {
+            text: guestURL,
+            width: 200,
+            height: 200
+        }
+    );
+
+
+    alert("Wedding Event Created!");
 
 });
 
-</script>
 
-<div id="guestPage" style="display:none;">
+// GUEST BUTTON
 
-    <h2>📸 Guest Gallery</h2>
+guestButton.onclick = function() {
 
-    <h1 id="guestName"></h1>
-
-    <p id="eventId"></p>
-
-    <div id="qrCode" style="margin-top:20px;"></div>
-
-    <p id="guestInfo"></p>
-
-    <input type="file" id="guestPhotos">
-
-<div id="gallery" style="margin-top:20px;"></div>
-
-</div>
-
-<script>
-
-document.getElementById("guestPhotos").onchange = function() {
-
-    let gallery = document.getElementById("gallery");
-
-    gallery.innerHTML = "";
-
-    for (let file of this.files) {
-
-        let img = document.createElement("img");
-
-        img.src = URL.createObjectURL(file);
-
-        img.style.width = "200px";
-        img.style.margin = "5px";
-
-        gallery.appendChild(img);
-
-    }
+    guestPage
+    .style.display = "block";
 
 };
 
+
+// PHOTO GALLERY
+
+document
+.getElementById("guestPhotos")
+.addEventListener("change", function(event) {
+
+    gallery.innerHTML = "";
+
+
+    for (let file of event.target.files) {
+
+        let img =
+        document.createElement("img");
+
+
+        img.src =
+        URL.createObjectURL(file);
+
+
+        gallery
+        .appendChild(img);
+
+    }
+
+});
+
+
+// OPEN EVENT FROM QR
+
+const urlParams =
+new URLSearchParams(
+    window.location.search
+);
+
+
+const guestEvent =
+urlParams.get("event");
+
+
+if (guestEvent) {
+
+    guestPage
+    .style.display = "block";
+
+
+    const guestNameFromQR =
+    guestEvent
+    .replace(/-\d{4}$/, "")
+    .replace(/-/g, " & ");
+
+
+    guestName
+    .innerText =
+    guestNameFromQR;
+
+
+    eventId
+    .innerText =
+    "Event ID: " + guestEvent;
+
+
+    document
+    .getElementById("event")
+    .style.display = "none";
+
+}
+
 </script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 </body>
 
