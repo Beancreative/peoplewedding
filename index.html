@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Moments Wedding</title>
+
+<style>
+
+body {
+    font-family: Arial;
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0 15px;
+    box-sizing: border-box;
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    background: black;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+#event {
+    margin-top: 30px;
+    padding: 20px;
+    background: #f2f2f2;
+    display: none;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<h1>PeopleWedding</h1>
+
+<h2>Create Wedding Event</h2>
+
+
+<label>
+Couple Name
+</label>
+
+<input
+id="name"
+placeholder="Ery & Sara"
+>
+
+
+<label>
+Wedding Date
+</label>
+
+<input
+id="date"
+type="date"
+>
+
+
+<label>
+Location
+</label>
+
+<input
+id="location"
+placeholder="Kuala Lumpur"
+>
+
+
+<button id="create">
+
+Create Wedding Event
+
+</button>
+
+<button id="guestButton">
+    GUEST
+</button>
+
+<script>
+
+document.getElementById("guestButton").onclick = function() {
+
+    document.getElementById("guestPage").style.display = "block";
+
+};
+
+</script>
+
+
+<div id="event">
+
+<h2 id="eventName"></h2>
+
+<p id="eventDate"></p>
+
+<p id="eventLocation"></p>
+
+</div>
+
+
+<script>
+
+document
+.getElementById("create")
+.addEventListener("click", function() {
+
+
+let name =
+document.getElementById("name").value;
+
+
+let date =
+document.getElementById("date").value;
+
+
+let location =
+document.getElementById("location").value;
+
+
+if (name === "") {
+
+alert("Masukkan nama pengantin");
+
+return;
+
+}
+
+
+if (date === "") {
+
+alert("Pilih tarikh wedding");
+
+return;
+
+}
+
+
+if (location === "") {
+
+alert("Masukkan lokasi");
+
+return;
+
+}
+
+
+document
+.getElementById("eventName")
+.innerText =
+"💍 " + name;
+
+
+document
+.getElementById("eventDate")
+.innerText =
+"📅 " + date;
+
+
+document
+.getElementById("eventLocation")
+.innerText =
+"📍 " + location;
+
+
+document
+.getElementById("event")
+.style.display =
+"block";
+
+document
+.getElementById("guestName")
+.innerText =
+name;
+
+document
+.getElementById("eventId")
+.innerText =
+"Event ID: " +
+
+name
+.toUpperCase()
+.replace(/\s*&\s*/g, "-")
+.replace(/\s+/g, "-")
++ "-2026";
+
+let eventCode =
+name
+.toUpperCase()
+.replace(/\s*&\s*/g, "-")
+.replace(/\s+/g, "-")
++ "-2026";
+
+document.getElementById("qrCode").innerHTML = "";
+
+new QRCode(
+    document.getElementById("qrCode"),
+    {
+        text: "https://moments.example/" + eventCode,
+        width: 200,
+        height: 200
+    }
+);
+
+
+alert("Wedding Event Created!");
+
+
+});
+
+</script>
+
+<div id="guestPage" style="display:none;">
+
+    <h2>📸 Guest Gallery</h2>
+
+    <h1 id="guestName"></h1>
+
+    <p id="eventId"></p>
+
+    <div id="qrCode" style="margin-top:20px;"></div>
+
+    <p id="guestInfo"></p>
+
+    <input type="file" id="guestPhotos">
+
+<div id="gallery" style="margin-top:20px;"></div>
+
+</div>
+
+<script>
+
+document.getElementById("guestPhotos").onchange = function() {
+
+    let gallery = document.getElementById("gallery");
+
+    gallery.innerHTML = "";
+
+    for (let file of this.files) {
+
+        let img = document.createElement("img");
+
+        img.src = URL.createObjectURL(file);
+
+        img.style.width = "200px";
+        img.style.margin = "5px";
+
+        gallery.appendChild(img);
+
+    }
+
+};
+
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+</body>
+
+</html>
