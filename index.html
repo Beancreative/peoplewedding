@@ -67,6 +67,8 @@ button {
 
 <body>
 
+<div id="adminPage">
+
 <h1>PeopleWedding</h1>
 
 <h2>Create Wedding Event</h2>
@@ -114,6 +116,8 @@ GUEST
 <p id="eventDate"></p>
 
 <p id="eventLocation"></p>
+
+</div>
 
 </div>
 
@@ -346,6 +350,8 @@ urlParams.get("event");
 
 
 if (guestEvent) {
+
+    document.getElementById("adminPage").style.display = "none";
 
     guestPage
     .style.display = "block";
